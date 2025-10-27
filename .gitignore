@@ -1,3 +1,6 @@
 venv/
 .env
 .DS_Store
+
+network_security.egg-info/
+__pycache__/
