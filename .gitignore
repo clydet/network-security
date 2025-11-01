@@ -4,3 +4,5 @@ venv/
 
 network_security.egg-info/
 __pycache__/
+
+logs/
