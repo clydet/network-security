@@ -2,7 +2,7 @@ from networksecurity.entity.artifact_entity import DataIngestionArtifact, DataVa
 from networksecurity.entity.config_entity import DataValidationConfig
 from networksecurity.exception.exception import NetworkSecurityException
 from networksecurity.logging.logger import logger
-from networksecurity.utils.main_utils.utils import read_yaml_file, write_yaml_file
+from networksecurity.utils.main_utils.utils import read_yaml_file, write_yaml_file, save_object
 from networksecurity.constants.training_pipeline import SCHEMA_FILE_PATH
 
 from scipy.stats import ks_2samp
@@ -114,6 +114,10 @@ class DataValidation:
             train_drift_status = self.detect_dataset_drift(base_df=train_dataframe, current_df=test_dataframe)
             dir_path = os.path.dirname(self.data_validation_config.valid_train_file_path)
             os.makedirs(dir_path, exist_ok=True)
+
+            train_dataframe.to_csv(self.data_validation_config.valid_train_file_path, index=False, header=True)
+            test_dataframe.to_csv(self.data_validation_config.valid_test_file_path, index=False, header=True)
+            save_object(file_path=self.data_validation_config.drift_report_file_path, obj=train_drift_status)
 
             data_validation_artifact = DataValidationArtifact(
                 validation_status=train_drift_status,
